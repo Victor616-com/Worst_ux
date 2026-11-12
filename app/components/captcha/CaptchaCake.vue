@@ -70,33 +70,38 @@ onBeforeUnmount(() => clearInterval(timer))
 
 <template>
   <div v-if="item" class="flex flex-col gap-3">
-    <div class="flex justify-between text-sm">
-      <span class="text-neutral-300">Photo {{ round + 1 }} of {{ ROUNDS }}</span>
-      <span class="font-mono text-neutral-500">
-        mistakes {{ mistakes }}/{{ MAX_MISTAKES }} ·
-        <span :class="remaining <= 2 ? 'text-red-400' : ''">{{ remaining }}s</span>
+    <div class="flex items-center justify-between gap-2">
+      <span>Photo {{ round + 1 }} of {{ ROUNDS }}</span>
+      <span class="flex gap-1 text-sm tabular-nums">
+        <span class="w95-well px-2 py-0.5">Mistakes: {{ mistakes }}/{{ MAX_MISTAKES }}</span>
+        <span class="w95-well px-2 py-0.5" :class="remaining <= 2 ? 'text-[var(--w95-bad)]' : ''">{{ remaining }}s</span>
       </span>
     </div>
 
-    <div ref="photo" class="relative rounded-xl overflow-hidden bg-neutral-950 border border-neutral-800 h-72 center">
+    <div ref="photo" class="w95-sunken relative overflow-hidden bg-black! h-72 center">
       <img :src="item.src" alt="Is this real or cake?" class="max-h-full max-w-full object-contain" draggable="false">
       <div
         v-if="reveal"
-        class="absolute inset-x-0 bottom-0 p-3 text-sm font-medium backdrop-blur"
-        :class="reveal.correct ? 'bg-green-600/80' : 'bg-red-600/80'"
+        class="w95-raised absolute inset-x-3 bottom-3 p-0.75"
         role="status"
       >
-        {{ reveal.correct ? '✓' : '✗' }} {{ reveal.text }}
+        <div class="w95-titlebar text-xs" :style="reveal.correct ? undefined : { background: 'linear-gradient(90deg, #800000, #d04010)' }">
+          {{ reveal.correct ? 'Correct' : 'Error' }}
+        </div>
+        <div class="flex items-center gap-2.5 p-2 text-sm">
+          <Win95Icon :name="reveal.correct ? 'info' : 'warning'" :size="24" />
+          <span>{{ reveal.text }}</span>
+        </div>
       </div>
     </div>
 
-    <p class="text-[10px] text-neutral-600 truncate">
+    <p class="text-[10px] text-[#404040] truncate">
       Photo: <a :href="item.credit.url" target="_blank" rel="noopener" class="underline">{{ item.credit.author }}</a>, {{ item.credit.license }}, via Wikimedia Commons
     </p>
 
     <div class="grid grid-cols-2 gap-3">
-      <button type="button" class="btn bg-neutral-700!" :disabled="!!reveal" @click="answer('real')">Real</button>
-      <button type="button" class="btn bg-pink-600!" :disabled="!!reveal" @click="answer('cake')">🎂 Cake</button>
+      <button type="button" class="w95-btn h-9" :disabled="!!reveal" @click="answer('real')">Real</button>
+      <button type="button" class="w95-btn h-9" :disabled="!!reveal" @click="answer('cake')">🎂 Cake</button>
     </div>
   </div>
 </template>
