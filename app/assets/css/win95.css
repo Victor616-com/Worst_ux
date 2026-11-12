@@ -196,3 +196,44 @@
     inset -2px -2px var(--w95-shadow),
     inset 2px 2px var(--w95-light);
 }
+
+/* checkbox: sunken white box with a pixel tick */
+.w95-checkbox {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  background: #fff;
+  box-shadow:
+    inset -1px -1px var(--w95-light),
+    inset 1px 1px var(--w95-shadow),
+    inset -2px -2px var(--w95-hilite),
+    inset 2px 2px var(--w95-dark);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.w95-checkbox:checked::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: #000;
+  clip-path: polygon(0 45%, 15% 30%, 40% 55%, 85% 10%, 100% 25%, 40% 85%);
+}
+.w95-checkbox:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: 2px;
+}
+
+/* single-line text field */
+.w95-field {
+  width: 100%;
+  padding: 3px 5px;
+  font: inherit;
+  color: #000;
+  outline: none;
+}
+.w95-field:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -4px;
+}
