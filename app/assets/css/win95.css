@@ -1,0 +1,239 @@
+/* Win95/98 primitives. Everything is bevels made from inset box-shadows. */
+
+.win95 {
+  --w95-face: #c0c0c0;
+  --w95-light: #ffffff;
+  --w95-hilite: #dfdfdf;
+  --w95-shadow: #808080;
+  --w95-dark: #0a0a0a;
+  --w95-navy: #000080;
+  --w95-title: linear-gradient(90deg, #000080, #1084d0);
+  --w95-title-off: linear-gradient(90deg, #808080, #b5b5b5);
+  --w95-desktop: #008080;
+  --w95-ok: #007a00;
+  --w95-bad: #c00000;
+
+  font-family: 'Pixelify Sans', 'MS Sans Serif', Tahoma, sans-serif;
+  font-size: 15px;
+  line-height: 1.3;
+  color: #000;
+  font-variant-ligatures: none;
+  -webkit-font-smoothing: none;
+}
+
+/* raised: windows, buttons, panels */
+.w95-raised {
+  background: var(--w95-face);
+  box-shadow:
+    inset -1px -1px var(--w95-dark),
+    inset 1px 1px var(--w95-hilite),
+    inset -2px -2px var(--w95-shadow),
+    inset 2px 2px var(--w95-light);
+}
+
+/* sunken: text fields, canvases, progress tracks */
+.w95-sunken {
+  background: #fff;
+  box-shadow:
+    inset -1px -1px var(--w95-light),
+    inset 1px 1px var(--w95-shadow),
+    inset -2px -2px var(--w95-hilite),
+    inset 2px 2px var(--w95-dark);
+  padding: 2px;
+}
+
+/* thin sunken: status bar cells, clock */
+.w95-well {
+  box-shadow: inset -1px -1px var(--w95-light), inset 1px 1px var(--w95-shadow);
+}
+
+.w95-window {
+  padding: 3px;
+}
+
+.w95-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 22px;
+  padding: 2px 3px 2px 4px;
+  background: var(--w95-title);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+.w95-titlebar.is-inactive {
+  background: var(--w95-title-off);
+  color: var(--w95-hilite);
+}
+
+.w95-btn {
+  min-width: 75px;
+  min-height: 26px;
+  padding: 3px 14px;
+  background: var(--w95-face);
+  color: #000;
+  font: inherit;
+  cursor: pointer;
+  box-shadow:
+    inset -1px -1px var(--w95-dark),
+    inset 1px 1px var(--w95-light),
+    inset -2px -2px var(--w95-shadow),
+    inset 2px 2px var(--w95-hilite);
+}
+.w95-btn:active:not(:disabled),
+.w95-btn.is-pressed {
+  box-shadow:
+    inset -1px -1px var(--w95-light),
+    inset 1px 1px var(--w95-dark),
+    inset -2px -2px var(--w95-hilite),
+    inset 2px 2px var(--w95-shadow);
+  padding: 4px 13px 2px 15px;
+}
+.w95-btn:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -5px;
+}
+.w95-btn:disabled {
+  color: var(--w95-shadow);
+  text-shadow: 1px 1px var(--w95-light);
+  cursor: default;
+}
+
+/* the little ▁ □ ✕ buttons in a title bar */
+.w95-titlebtn {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 16px;
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 700;
+}
+.w95-titlebtn:active:not(:disabled) {
+  padding: 1px 0 0 1px;
+}
+
+/* etched group box with a legend */
+.w95-group {
+  border: none;
+  margin: 0;
+  padding: 8px 10px 10px;
+  border: 1px solid var(--w95-shadow);
+  box-shadow: inset 1px 1px var(--w95-light), 1px 1px var(--w95-light);
+}
+.w95-group > legend {
+  padding: 0 4px;
+  margin-left: 4px;
+  background: var(--w95-face);
+}
+
+/* radio */
+.w95-radio {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    inset -1px -1px var(--w95-light),
+    inset 1px 1px var(--w95-shadow),
+    inset -2px -2px var(--w95-hilite),
+    inset 2px 2px var(--w95-dark);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.w95-radio:checked::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #000;
+}
+.w95-radio:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: 2px;
+}
+
+/* segmented progress, like the 70% "Loading..." dialog */
+.w95-progress {
+  height: 22px;
+  padding: 3px;
+}
+.w95-progress > span {
+  display: block;
+  height: 100%;
+  background: repeating-linear-gradient(90deg, var(--w95-navy) 0 10px, transparent 10px 12px);
+  transition: width 0.5s steps(8);
+}
+
+/* classic 3D-text icon labels on the teal desktop */
+.w95-iconlabel {
+  color: #fff;
+  font-size: 13px;
+  text-align: center;
+  padding: 0 2px;
+}
+
+.w95-scroll {
+  scrollbar-color: var(--w95-face) #dfdfdf;
+}
+.w95-scroll::-webkit-scrollbar {
+  width: 16px;
+  background: repeating-conic-gradient(var(--w95-face) 0 25%, #fff 0 50%) 0 0 / 2px 2px;
+}
+.w95-scroll::-webkit-scrollbar-thumb {
+  background: var(--w95-face);
+  box-shadow:
+    inset -1px -1px var(--w95-dark),
+    inset 1px 1px var(--w95-hilite),
+    inset -2px -2px var(--w95-shadow),
+    inset 2px 2px var(--w95-light);
+}
+
+/* checkbox: sunken white box with a pixel tick */
+.w95-checkbox {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  background: #fff;
+  box-shadow:
+    inset -1px -1px var(--w95-light),
+    inset 1px 1px var(--w95-shadow),
+    inset -2px -2px var(--w95-hilite),
+    inset 2px 2px var(--w95-dark);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.w95-checkbox:checked::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: #000;
+  clip-path: polygon(0 45%, 15% 30%, 40% 55%, 85% 10%, 100% 25%, 40% 85%);
+}
+.w95-checkbox:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: 2px;
+}
+
+/* single-line text field */
+.w95-field {
+  width: 100%;
+  padding: 3px 5px;
+  font: inherit;
+  color: #000;
+  outline: none;
+}
+.w95-field:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -4px;
+}

@@ -123,10 +123,10 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="text-sm text-neutral-400">The power went out…</div>
+  <div class="flex items-center gap-3"><Win95Icon name="warning" /> The power went out…</div>
 
   <Teleport to="body">
-    <div class="fixed inset-0 z-[100] bg-black cursor-none select-none overflow-hidden" @pointermove="onMove">
+    <div class="win95 fixed inset-0 z-[100] bg-black cursor-none select-none overflow-hidden" @pointermove="onMove">
       <div
         ref="scene"
         class="torch-scene absolute inset-0"
@@ -160,18 +160,23 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- HUD: always visible, outside the torch mask -->
-      <p class="absolute top-6 inset-x-0 text-center text-neutral-600 text-sm pointer-events-none">
+      <p class="absolute top-6 inset-x-0 text-center text-[#808080] pointer-events-none">
         Find the light switch.
       </p>
 
       <div v-if="broken" class="absolute inset-0 center flex-col gap-3 pointer-events-none">
-        <p class="text-neutral-400">🔦 Your torch broke. Shake your mouse to fix it.</p>
-        <div class="w-48 h-1.5 rounded-full bg-neutral-800 overflow-hidden">
-          <div class="h-full bg-amber-400 transition-all duration-150" :style="{ width: `${shake * 100}%` }" />
+        <div class="w95-raised w95-window w-72">
+          <div class="w95-titlebar text-sm">Torch.exe</div>
+          <div class="flex flex-col gap-2.5 p-3">
+            <p class="flex items-center gap-2.5"><Win95Icon name="warning" :size="24" /> Your torch broke. Shake your mouse to fix it.</p>
+            <div class="w95-sunken w95-progress">
+              <span :style="{ width: `${shake * 100}%`, transition: 'width 0.15s' }" />
+            </div>
+          </div>
         </div>
       </div>
 
-      <p v-if="message" class="absolute bottom-8 inset-x-0 text-center text-neutral-400 text-sm pointer-events-none">
+      <p v-if="message" class="absolute bottom-8 inset-x-0 text-center text-[#c0c0c0] pointer-events-none">
         {{ message }}
       </p>
     </div>

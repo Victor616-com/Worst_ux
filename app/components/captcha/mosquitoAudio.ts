@@ -116,11 +116,11 @@ export function createMosquitoAudio() {
 
   /** Browsers start audio suspended until a user gesture. */
   function resume() {
-    if (ctx.state === 'suspended') ctx.resume()
+    if (ctx.state === 'suspended') ctx.resume().catch(() => {})
   }
 
   function dispose() {
-    ctx.close()
+    if (ctx.state !== 'closed') ctx.close().catch(() => {})
   }
 
   return { setBuzz, buzz, smack, whoosh, setMuted, resume, dispose }
