@@ -5,7 +5,6 @@ import CaptchaMosquito from "./captcha/CaptchaMosquito.vue";
 import CaptchaPiano from "./captcha/CaptchaPiano.vue";
 import CaptchaTrolley from "./captcha/CaptchaTrolley.vue";
 import CaptchaTorch from "./captcha/CaptchaTorch.vue";
-import CaptchaMurder from "./captcha/CaptchaMurder.vue";
 
 const emit = defineEmits<{ done: []; cancel: [] }>();
 
@@ -15,7 +14,6 @@ const STEPS = [
   { title: "Real or cake?", component: CaptchaCake, progress: 3 },
   { title: "Make an ethical decision", component: CaptchaTrolley, progress: 4 },
   { title: "Restore power", component: CaptchaTorch, progress: 2 },
-  { title: "Solve the murder", component: CaptchaMurder, progress: 11 },
 ];
 
 const index = ref(0);
@@ -27,7 +25,11 @@ const card = ref<HTMLElement>();
 
 const step = computed(() => STEPS[index.value]!);
 
+let advancing = false;
+
 async function next() {
+  if (advancing) return;
+  advancing = true;
   await gsap.to(body.value!, { opacity: 0, x: -30, duration: 0.25 });
   if (index.value < STEPS.length - 1) index.value++;
   else phase.value = "verifying";
@@ -37,6 +39,7 @@ async function next() {
     { opacity: 0, x: 30 },
     { opacity: 1, x: 0, duration: 0.3 },
   );
+  advancing = false;
   if (phase.value === "verifying") verify();
 }
 
@@ -83,9 +86,22 @@ const DESKTOP_ICONS = [
   { icon: "document", label: "not_a_robot.txt" },
 ] as const;
 
-onBeforeUnmount(() => clearInterval(clockTimer));
+// cheat code: 7 skips whatever step you're on (top-row or numpad 7, any layout)
+function onKeydown(e: KeyboardEvent) {
+  const isSeven = e.key === "7" || e.code === "Digit7" || e.code === "Numpad7";
+  if (!isSeven || e.repeat || phase.value !== "steps") return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  next();
+}
+
+onBeforeUnmount(() => {
+  clearInterval(clockTimer);
+  window.removeEventListener("keydown", onKeydown, true);
+});
 
 onMounted(() => {
+  window.addEventListener("keydown", onKeydown, true);
   tickClock();
   clockTimer = setInterval(tickClock, 10_000);
   gsap.from(card.value!, {
