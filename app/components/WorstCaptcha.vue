@@ -5,6 +5,7 @@ import CaptchaMosquito from "./captcha/CaptchaMosquito.vue";
 import CaptchaPiano from "./captcha/CaptchaPiano.vue";
 import CaptchaTrolley from "./captcha/CaptchaTrolley.vue";
 import CaptchaTorch from "./captcha/CaptchaTorch.vue";
+import CaptchaTattoo from "./captcha/CaptchaTattoo.vue";
 
 const emit = defineEmits<{ done: []; cancel: [] }>();
 
@@ -14,6 +15,7 @@ const STEPS = [
   { title: "Real or cake?", component: CaptchaCake, progress: 3 },
   { title: "Make an ethical decision", component: CaptchaTrolley, progress: 4 },
   { title: "Restore power", component: CaptchaTorch, progress: 2 },
+  { title: "Translate the tattoo", component: CaptchaTattoo, progress: 9 },
 ];
 
 const index = ref(0);
