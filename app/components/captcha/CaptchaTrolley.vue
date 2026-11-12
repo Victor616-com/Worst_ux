@@ -98,51 +98,71 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <div class="flex justify-between text-sm">
-      <span class="text-neutral-300">Dilemma {{ round + 1 }} of {{ DILEMMAS.length }}</span>
-      <span class="font-mono" :class="remaining <= 2 ? 'text-red-400' : 'text-neutral-500'">
-        {{ remaining }}s until junction
+    <div class="flex items-center justify-between gap-3">
+      <span class="chip bg-sky">⚖️ Dilemma {{ round + 1 }} / {{ DILEMMAS.length }}</span>
+      <span class="chip font-mono" :class="remaining <= 2 && !result ? 'bg-tomato' : ''">
+        ⏱ {{ remaining }}s to junction
       </span>
     </div>
 
-    <svg viewBox="0 0 400 170" class="w-full rounded-xl bg-neutral-950 border border-neutral-800">
-      <line x1="0" y1="85" x2="150" y2="85" stroke="#525252" stroke-width="4" />
-      <line
-        x1="150" y1="85" x2="400" y2="35" stroke-width="4"
-        :stroke="track === 'a' ? '#a78bfa' : '#404040'"
-      />
-      <line
-        x1="150" y1="85" x2="400" y2="135" stroke-width="4"
-        :stroke="track === 'b' ? '#a78bfa' : '#404040'"
-      />
+    <div class="stage bg-[#eaf4ff]">
+      <svg viewBox="0 0 400 170" class="block w-full" role="img" :aria-label="`Top track: ${dilemma.a.label}. Bottom track: ${dilemma.b.label}.`">
+        <!-- ground -->
+        <rect x="0" y="0" width="400" height="170" fill="#eaf4ff" />
+        <!-- selected route glow -->
+        <line x1="0" y1="85" x2="150" y2="85" stroke="#ffd23f" stroke-width="14" stroke-linecap="round" />
+        <line
+          x1="150" y1="85" :x2="400" :y2="track === 'a' ? 35 : 135"
+          stroke="#ffd23f" stroke-width="14" stroke-linecap="round"
+        />
+        <!-- rails with sleepers -->
+        <g stroke="#16130f" fill="none">
+          <line x1="0" y1="85" x2="150" y2="85" stroke-width="10" stroke-dasharray="2 8" />
+          <line x1="150" y1="85" x2="400" y2="35" stroke-width="10" stroke-dasharray="2 8" />
+          <line x1="150" y1="85" x2="400" y2="135" stroke-width="10" stroke-dasharray="2 8" />
+          <line x1="0" y1="85" x2="150" y2="85" stroke-width="3" />
+          <line x1="150" y1="85" x2="400" y2="35" stroke-width="3" />
+          <line x1="150" y1="85" x2="400" y2="135" stroke-width="3" />
+        </g>
+        <!-- lever at the junction -->
+        <g :transform="`translate(150 108) rotate(${track === 'a' ? -25 : 25})`">
+          <line x1="0" y1="0" x2="0" y2="-16" stroke="#16130f" stroke-width="3" stroke-linecap="round" />
+          <circle cx="0" cy="-17" r="4" fill="#ff6b5b" stroke="#16130f" stroke-width="2" />
+        </g>
+        <rect x="142" y="106" width="16" height="6" rx="2" fill="#16130f" />
 
-      <text x="330" y="51" font-size="16" text-anchor="middle" dominant-baseline="middle">{{ dilemma.a.emoji }}</text>
-      <text x="330" y="28" font-size="9" fill="#a3a3a3" text-anchor="middle">{{ dilemma.a.label }}</text>
-      <text x="330" y="119" font-size="16" text-anchor="middle" dominant-baseline="middle">{{ dilemma.b.emoji }}</text>
-      <text x="330" y="148" font-size="9" fill="#a3a3a3" text-anchor="middle">{{ dilemma.b.label }}</text>
+        <!-- victims with label tags -->
+        <g>
+          <rect x="268" y="12" width="124" height="16" rx="8" fill="#fff" stroke="#16130f" stroke-width="2" />
+          <text x="330" y="23" font-size="9" font-weight="700" fill="#16130f" text-anchor="middle">{{ dilemma.a.label }}</text>
+          <text x="330" y="52" font-size="16" text-anchor="middle" dominant-baseline="middle">{{ dilemma.a.emoji }}</text>
+        </g>
+        <g>
+          <rect x="268" y="142" width="124" height="16" rx="8" fill="#fff" stroke="#16130f" stroke-width="2" />
+          <text x="330" y="153" font-size="9" font-weight="700" fill="#16130f" text-anchor="middle">{{ dilemma.b.label }}</text>
+          <text x="330" y="119" font-size="16" text-anchor="middle" dominant-baseline="middle">{{ dilemma.b.emoji }}</text>
+        </g>
 
-      <text ref="trolley" x="10" y="85" font-size="24" text-anchor="middle" dominant-baseline="middle">🚋</text>
-    </svg>
+        <text ref="trolley" x="10" y="85" font-size="26" text-anchor="middle" dominant-baseline="middle">🚋</text>
+      </svg>
+    </div>
 
     <div class="flex items-center justify-between gap-4">
-      <span class="text-sm text-neutral-400">
-        Heading for: <b class="text-neutral-100">{{ track === 'a' ? 'top track' : 'bottom track' }}</b>
-      </span>
-      <button type="button" class="btn" :disabled="!!result" @click="pull">
-        Pull lever
+      <p class="text-sm">
+        Heading for the
+        <b class="px-1.5 py-0.5 rounded bg-sun border-2 border-ink">{{ track === 'a' ? 'top' : 'bottom' }}</b>
+        track
+      </p>
+      <button type="button" class="btn bg-sky!" :disabled="!!result" @click="pull">
+        <span class="i-carbon-arrows-vertical" /> Pull lever
       </button>
     </div>
 
-    <p
-      v-if="message"
-      class="text-sm"
-      :class="result === 'right' ? 'text-green-400' : 'text-red-400'"
-      role="status"
-    >
+    <p v-if="message" :class="result === 'right' ? 'note-ok' : 'note-bad'" role="status">
       {{ message }}
     </p>
 
-    <p class="text-[9px] leading-tight text-neutral-600">
+    <p class="text-[9px] leading-tight text-muted/70">
       Under CAPTCHA Ethics Policy §4.2(b), this CAPTCHA follows Leg Utilitarianism:
       always run over the fewest legs. Doing nothing still counts as a choice.
     </p>

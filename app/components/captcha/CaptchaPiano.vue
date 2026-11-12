@@ -154,55 +154,66 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <div class="flex items-start justify-between gap-4 text-sm">
-      <span :class="status === 'wrong' ? 'text-red-400' : status === 'done' ? 'text-green-400' : 'text-neutral-300'" role="status">
-        {{ message }}
-      </span>
-      <button type="button" class="shrink-0 flex items-center gap-1 text-neutral-400 hover:text-white cursor-pointer disabled:opacity-40" :disabled="demo" @click="listen">
-        <span class="i-carbon-play-filled" /> Listen
+    <div class="flex items-center justify-between gap-3">
+      <span class="chip bg-grape">🎵 {{ position }} / {{ SONG.length }} notes</span>
+      <button type="button" class="btn-ghost" :disabled="demo" @click="listen">
+        <span class="i-carbon-play-filled-alt" /> Listen
       </button>
     </div>
 
     <!-- lyrics, lit up as you go -->
-    <p class="flex flex-wrap gap-x-1.5 gap-y-1 text-lg leading-snug">
-      <span
-        v-for="(s, i) in SONG"
-        :key="i"
-        class="transition-colors"
-        :class="i < position ? 'text-amber-300' : i === position && !demo ? 'text-neutral-100 underline underline-offset-4' : 'text-neutral-600'"
-      >{{ s.word }}</span>
-    </p>
+    <div class="stage bg-paper px-4 py-3">
+      <p class="flex flex-wrap gap-x-2 gap-y-1 font-display text-xl font-bold leading-snug">
+        <span
+          v-for="(s, i) in SONG"
+          :key="i"
+          class="inline-flex flex-col items-center transition-colors"
+          :class="i < position ? 'text-ink' : i === position && !demo ? 'text-ink' : 'text-ink/25'"
+        >
+          <span :class="i === position && !demo ? 'bg-grape rounded px-1 -mx-1' : ''">{{ s.word }}</span>
+          <span class="font-mono text-[10px] font-normal" :class="i < position ? 'text-muted' : 'opacity-0'">{{ s.note }}</span>
+        </span>
+      </p>
+    </div>
 
     <!-- keyboard -->
-    <div class="relative h-44 select-none touch-manipulation">
-      <div class="flex h-full gap-0.5">
+    <div class="stage bg-ink p-2 pt-3">
+      <div class="relative h-44 select-none touch-manipulation">
+        <div class="flex h-full gap-1">
+          <button
+            v-for="k in WHITE"
+            :key="k.note"
+            type="button"
+            class="flex-1 rounded-b-lg rounded-t-sm flex flex-col justify-end items-center pb-2 gap-0.5 text-xs cursor-pointer transition-all duration-75"
+            :class="pressed === k.note ? 'bg-grape translate-y-0.5' : 'bg-white hover:bg-paper shadow-[inset_0_-6px_0_0_#e8dccb]'"
+            :aria-label="`${k.note} key`"
+            @pointerdown.prevent="play(k)"
+          >
+            <span class="font-bold text-ink">{{ k.note.replace('5', '') }}</span>
+            <span class="font-mono uppercase text-[10px] text-muted">{{ k.kbd }}</span>
+          </button>
+        </div>
         <button
-          v-for="k in WHITE"
+          v-for="k in BLACK"
           :key="k.note"
           type="button"
-          class="flex-1 rounded-b-lg border border-neutral-400 flex flex-col justify-end items-center pb-2 text-xs text-neutral-500 cursor-pointer transition-colors"
-          :class="pressed === k.note ? 'bg-amber-200' : 'bg-white hover:bg-neutral-100'"
+          class="absolute top-0 w-[8%] h-[60%] rounded-b-md border-2 border-ink flex items-end justify-center pb-1.5 font-mono text-[10px] uppercase cursor-pointer transition-all duration-75"
+          :class="pressed === k.note ? 'bg-grape text-ink translate-y-0.5' : 'bg-[#2b2620] text-white/50 hover:bg-[#3a342c] shadow-[inset_0_-5px_0_0_#000]'"
+          :style="{ left: blackLeft(k) }"
           :aria-label="`${k.note} key`"
           @pointerdown.prevent="play(k)"
         >
-          <span class="font-semibold text-neutral-700">{{ k.note.replace('5', '') }}</span>
-          <span class="uppercase opacity-60">{{ k.kbd }}</span>
+          {{ k.kbd }}
         </button>
       </div>
-      <button
-        v-for="k in BLACK"
-        :key="k.note"
-        type="button"
-        class="absolute top-0 w-[8%] h-[60%] rounded-b-md border border-black flex items-end justify-center pb-1 text-[10px] text-neutral-500 uppercase cursor-pointer transition-colors"
-        :class="pressed === k.note ? 'bg-amber-600' : 'bg-neutral-900 hover:bg-neutral-800'"
-        :style="{ left: blackLeft(k) }"
-        :aria-label="`${k.note} key`"
-        @pointerdown.prevent="play(k)"
-      >
-        {{ k.kbd }}
-      </button>
     </div>
 
-    <p class="text-xs text-neutral-600">Click the keys or use your keyboard (A S D F G H J K).</p>
+    <p
+      :class="status === 'wrong' ? 'note-bad' : status === 'done' ? 'note-ok' : 'note'"
+      role="status"
+    >
+      {{ message }}
+    </p>
+    <p class="text-xs text-muted -mt-2">Click the keys or use your keyboard: A S D F G H J K.</p>
   </div>
 </template>

@@ -1,0 +1,29 @@
+html {
+  background: #fff6e5;
+  color: #16130f;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* dotted paper background */
+.paper-bg {
+  background-color: #fff6e5;
+  background-image: radial-gradient(rgb(22 19 15 / 0.14) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+
+::selection {
+  background: #ffd23f;
+  color: #16130f;
+}
+
+:focus-visible {
+  outline: 3px solid #7cb8ff;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

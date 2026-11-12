@@ -9,13 +9,14 @@ import CaptchaMurder from "./captcha/CaptchaMurder.vue";
 
 const emit = defineEmits<{ done: []; cancel: [] }>();
 
+// accent = header colour, progress = the (deliberately useless) percentage shown
 const STEPS = [
-  { title: "Swat the mosquito", component: CaptchaMosquito, progress: 1 },
-  { title: "Play a song", component: CaptchaPiano, progress: 6 },
-  { title: "Real or cake?", component: CaptchaCake, progress: 3 },
-  { title: "Make an ethical decision", component: CaptchaTrolley, progress: 4 },
-  { title: "Restore power", component: CaptchaTorch, progress: 2 },
-  { title: "Solve the murder", component: CaptchaMurder, progress: 11 },
+  { title: "Swat the mosquito", icon: "🦟", accent: "#ffd23f", component: CaptchaMosquito, progress: 1 },
+  { title: "Play a song", icon: "🎹", accent: "#b69cff", component: CaptchaPiano, progress: 6 },
+  { title: "Real or cake?", icon: "🎂", accent: "#ff8fc7", component: CaptchaCake, progress: 3 },
+  { title: "Make an ethical decision", icon: "🚋", accent: "#7cb8ff", component: CaptchaTrolley, progress: 4 },
+  { title: "Restore power", icon: "🔦", accent: "#ffa552", component: CaptchaTorch, progress: 2 },
+  { title: "Solve the murder", icon: "🔍", accent: "#ff6b5b", component: CaptchaMurder, progress: 11 },
 ];
 
 const index = ref(0);
@@ -79,66 +80,127 @@ onMounted(() => {
 <template>
   <Teleport to="body">
     <div
-      class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm center p-4 text-neutral-100 font-sans"
+      class="fixed inset-0 z-50 bg-ink/70 backdrop-blur-sm center p-3 sm:p-6 text-ink font-sans"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="captcha-title"
     >
       <div
         ref="card"
-        class="w-full max-w-xl rounded-2xl bg-neutral-900 border border-neutral-800 shadow-2xl overflow-hidden"
+        class="card w-full max-w-xl max-h-[calc(100dvh-1.5rem)] flex flex-col overflow-hidden"
       >
+        <!-- header -->
         <header
-          class="flex items-center justify-between gap-4 px-6 py-4 bg-brand"
+          class="flex items-center gap-4 px-5 py-4 border-b-3 border-ink transition-colors duration-500"
+          :style="{ background: phase === 'steps' ? step.accent : '#5ee6a8' }"
         >
-          <div>
-            <p class="text-xs uppercase tracking-wider opacity-80">
+          <div
+            class="w-12 h-12 shrink-0 center rounded-xl border-2 border-ink bg-white text-2xl shadow-[2px_2px_0_0_#16130f]"
+            aria-hidden="true"
+          >
+            {{ phase === "steps" ? step.icon : "🤖" }}
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="eyebrow text-ink/70">
               {{
                 phase === "steps"
                   ? `Step ${index + 1} of ${STEPS.length}`
                   : "Almost there"
               }}
             </p>
-            <h3 class="text-lg font-bold">
+            <h3 id="captcha-title" class="heading text-xl sm:text-2xl truncate">
               {{ phase === "steps" ? step.title : "Verifying" }}
             </h3>
           </div>
           <button
             type="button"
-            class="p-1 rounded hover:bg-white/20 cursor-pointer"
+            class="icon-btn shrink-0"
             aria-label="Give up"
             title="Give up"
             @click="emit('cancel')"
           >
-            <div class="i-carbon-close text-xl" />
+            <span class="i-carbon-close text-xl" />
           </button>
         </header>
 
-        <div v-if="phase === 'steps'" class="h-1 bg-neutral-800">
-          <div
-            class="h-full bg-green-500 transition-all duration-700"
-            :style="{ width: `${step.progress}%` }"
-          />
+        <!-- progress -->
+        <div
+          class="flex items-center gap-3 px-5 py-2.5 border-b-2 border-ink bg-paper"
+        >
+          <ol class="flex-1 flex gap-1.5" aria-label="Progress">
+            <li
+              v-for="(s, i) in STEPS"
+              :key="s.title"
+              class="flex-1 h-2.5 rounded-full border-2 border-ink transition-colors duration-500"
+              :style="{
+                background:
+                  phase === 'verifying' || i < index
+                    ? '#16130f'
+                    : i === index
+                      ? step.accent
+                      : '#fff',
+              }"
+              :aria-current="i === index && phase === 'steps' ? 'step' : undefined"
+            />
+          </ol>
+          <span class="chip">
+            {{ phase === "steps" ? step.progress : 99 }}% done
+          </span>
         </div>
 
-        <div ref="body" class="p-6">
+        <!-- body -->
+        <div ref="body" class="p-5 sm:p-6 overflow-y-auto">
           <component
             :is="step.component"
             v-if="phase === 'steps'"
             :key="index"
             @pass="next"
           />
-          <div v-else class="flex flex-col gap-3 py-6">
-            <p class="text-neutral-300">{{ verifyText }}</p>
-            <div class="h-2 rounded-full bg-neutral-800 overflow-hidden">
+          <div v-else class="flex flex-col gap-4 py-4">
+            <p class="font-bold text-lg">{{ verifyText }}</p>
+            <div
+              class="stage h-6 rounded-full bg-white"
+              role="progressbar"
+              :aria-valuenow="verifyProgress"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
               <div
-                class="h-full bg-green-500"
+                class="verify-bar h-full border-r-2 border-ink"
                 :style="{ width: `${verifyProgress}%` }"
               />
             </div>
-            <p class="text-right font-mono text-sm text-neutral-500">
+            <p class="text-right font-mono text-sm text-muted">
               {{ verifyProgress }}%
             </p>
           </div>
         </div>
+
+        <footer
+          class="flex items-center justify-between gap-3 px-5 py-2 border-t-2 border-ink bg-paper text-[11px] text-muted"
+        >
+          <span class="font-bold text-ink">worst CAPTCHA™</span>
+          <span>Having trouble? That's the point.</span>
+        </footer>
       </div>
     </div>
   </Teleport>
 </template>
+
+<style scoped>
+.verify-bar {
+  background: repeating-linear-gradient(
+    -45deg,
+    #5ee6a8 0 12px,
+    #3fcf8e 12px 24px
+  );
+  background-size: 34px 34px;
+  animation: stripes 0.6s linear infinite;
+}
+
+@keyframes stripes {
+  to {
+    background-position: 34px 0;
+  }
+}
+</style>

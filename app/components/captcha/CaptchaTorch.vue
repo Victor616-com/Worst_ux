@@ -123,10 +123,13 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="text-sm text-neutral-400">The power went out…</div>
+  <div class="stage bg-ink text-white/70 h-40 center flex-col gap-2">
+    <span class="text-3xl">🔌</span>
+    <p class="font-bold">The power went out…</p>
+  </div>
 
   <Teleport to="body">
-    <div class="fixed inset-0 z-[100] bg-black cursor-none select-none overflow-hidden" @pointermove="onMove">
+    <div class="fixed inset-0 z-[100] bg-black cursor-none select-none overflow-hidden font-sans" @pointermove="onMove">
       <div
         ref="scene"
         class="torch-scene absolute inset-0"
@@ -150,30 +153,33 @@ onBeforeUnmount(() => {
           v-for="s in switches"
           :key="s.id"
           type="button"
-          class="absolute w-5 h-8 rounded bg-neutral-300 border border-neutral-500 center cursor-none"
+          class="absolute w-6 h-9 rounded-md bg-[#f3ead8] border-2 border-ink center cursor-none shadow-[2px_2px_0_0_#16130f]"
           :style="{ left: s.left, top: s.top }"
           aria-label="Light switch"
           @pointerdown.stop="clickSwitch(s.id, s.real)"
         >
-          <span class="block w-2 h-3 rounded-sm bg-neutral-500" />
+          <span class="block w-2.5 h-4 rounded-sm bg-white border-2 border-ink" />
         </button>
       </div>
 
       <!-- HUD: always visible, outside the torch mask -->
-      <p class="absolute top-6 inset-x-0 text-center text-neutral-600 text-sm pointer-events-none">
-        Find the light switch.
-      </p>
+      <div class="absolute top-5 inset-x-0 center pointer-events-none">
+        <span class="chip bg-tangerine">🔦 Find the light switch</span>
+      </div>
 
-      <div v-if="broken" class="absolute inset-0 center flex-col gap-3 pointer-events-none">
-        <p class="text-neutral-400">🔦 Your torch broke. Shake your mouse to fix it.</p>
-        <div class="w-48 h-1.5 rounded-full bg-neutral-800 overflow-hidden">
-          <div class="h-full bg-amber-400 transition-all duration-150" :style="{ width: `${shake * 100}%` }" />
+      <div v-if="broken" class="absolute inset-0 center pointer-events-none">
+        <div class="card bg-paper! px-6 py-5 flex flex-col items-center gap-3 text-ink">
+          <p class="heading text-xl">Your torch broke!</p>
+          <p class="text-sm text-muted">Shake your mouse to fix it.</p>
+          <div class="w-56 h-4 rounded-full border-2 border-ink bg-white overflow-hidden">
+            <div class="h-full bg-tangerine border-r-2 border-ink transition-all duration-150" :style="{ width: `${shake * 100}%` }" />
+          </div>
         </div>
       </div>
 
-      <p v-if="message" class="absolute bottom-8 inset-x-0 text-center text-neutral-400 text-sm pointer-events-none">
-        {{ message }}
-      </p>
+      <div v-if="message" class="absolute bottom-8 inset-x-0 center px-4 pointer-events-none">
+        <p class="note max-w-md text-center">{{ message }}</p>
+      </div>
     </div>
   </Teleport>
 </template>

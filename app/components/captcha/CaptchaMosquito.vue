@@ -127,31 +127,37 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="flex flex-col gap-3">
-    <div class="flex justify-between text-sm">
-      <span class="text-neutral-300">{{ message }}</span>
-      <span class="flex items-center gap-3">
-        <button
-          type="button"
-          class="text-neutral-500 hover:text-neutral-200 cursor-pointer"
-          :aria-label="muted ? 'Unmute' : 'Mute'"
-          :title="muted ? 'Unmute' : 'Mute'"
-          @click="toggleMute"
-        >
-          <span :class="muted ? 'i-carbon-volume-mute' : 'i-carbon-volume-up'" class="block" />
-        </button>
-        <span class="font-mono text-neutral-500">{{ kills }}/{{ NEEDED }}</span>
-      </span>
+    <div class="flex items-center justify-between gap-3">
+      <span class="chip bg-sun">🦟 {{ kills }} / {{ NEEDED }} squashed</span>
+      <button
+        type="button"
+        class="icon-btn"
+        :aria-label="muted ? 'Unmute' : 'Mute'"
+        :title="muted ? 'Unmute' : 'Mute'"
+        @click="toggleMute"
+      >
+        <span :class="muted ? 'i-carbon-volume-mute' : 'i-carbon-volume-up'" class="block text-lg" />
+      </button>
     </div>
 
     <div
       ref="area"
-      class="relative h-72 rounded-xl border border-neutral-800 overflow-hidden cursor-none select-none touch-none"
-      style="background: linear-gradient(#fef3c7, #fde68a)"
+      class="wall stage h-72 cursor-none select-none touch-none"
       @pointermove="moveSwatter"
       @pointerenter="hovering = true"
       @pointerleave="hovering = false"
       @pointerdown="moveSwatter($event); swat($event)"
     >
+      <!-- a picture frame and a lamp, so it feels like a room -->
+      <div class="absolute left-[8%] top-6 w-20 h-14 rounded border-3 border-ink bg-sky/60 shadow-[3px_3px_0_0_#16130f] pointer-events-none" aria-hidden="true">
+        <div class="absolute inset-x-0 bottom-0 h-1/2 bg-mint/70 [clip-path:polygon(0_100%,30%_20%,55%_70%,75%_35%,100%_100%)]" />
+      </div>
+      <div class="absolute right-[10%] bottom-0 flex flex-col items-center pointer-events-none" aria-hidden="true">
+        <div class="w-14 h-10 rounded-t-[50%] border-3 border-ink bg-sun" />
+        <div class="w-1.5 h-16 bg-ink" />
+        <div class="w-10 h-2 rounded-full bg-ink" />
+      </div>
+
       <!-- splats left behind on the wall -->
       <span
         v-for="s in splats"
@@ -178,24 +184,32 @@ onBeforeUnmount(() => {
           width="70"
           height="150"
           viewBox="0 0 70 150"
-          class="block -ml-[35px] -mt-[35px] origin-[35px_145px] drop-shadow"
+          class="block -ml-[35px] -mt-[35px] origin-[35px_145px]"
           aria-hidden="true"
         >
           <defs>
             <pattern id="mesh" width="6" height="6" patternUnits="userSpaceOnUse">
-              <path d="M0 0H6V6" fill="none" stroke="#1e3a8a" stroke-width="1.2" />
+              <path d="M0 0H6V6" fill="none" stroke="#16130f" stroke-width="1.1" />
             </pattern>
           </defs>
-          <rect x="31" y="62" width="8" height="86" rx="4" fill="#ef4444" />
-          <rect x="5" y="5" width="60" height="60" rx="10" fill="#3b82f6" opacity="0.85" />
-          <rect x="5" y="5" width="60" height="60" rx="10" fill="url(#mesh)" stroke="#1e3a8a" stroke-width="3" />
+          <rect x="31" y="62" width="8" height="86" rx="4" fill="#ff6b5b" stroke="#16130f" stroke-width="2" />
+          <rect x="5" y="5" width="60" height="60" rx="10" fill="#7cb8ff" opacity="0.9" />
+          <rect x="5" y="5" width="60" height="60" rx="10" fill="url(#mesh)" stroke="#16130f" stroke-width="3" />
         </svg>
       </div>
     </div>
+
+    <p :class="kills >= NEEDED ? 'note-ok' : 'note'" role="status">{{ message }}</p>
   </div>
 </template>
 
 <style scoped>
+.wall {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 46px, rgb(22 19 15 / 0.05) 46px 48px),
+    linear-gradient(#fff3c9, #ffe7a3);
+}
+
 @keyframes buzz {
   0% { transform: translate(0, 0); }
   25% { transform: translate(1px, -1px); }

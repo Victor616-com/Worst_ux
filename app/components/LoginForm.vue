@@ -51,46 +51,59 @@ function reset() {
 </script>
 
 <template>
-  <div class="w-full max-w-sm p-8 rounded-2xl bg-neutral-900 border border-neutral-800 shadow-2xl">
-    <div v-if="success" ref="successBox" class="flex flex-col items-center text-center gap-4 py-6">
-      <div class="i-carbon-checkmark-filled text-6xl text-green-500" />
-      <h2 class="text-2xl font-bold">Login successful</h2>
-      <p class="text-neutral-400">Welcome, {{ username }}. You've proven you're human. Eventually.</p>
-      <button class="btn" @click="reset">Log out</button>
+  <div class="card w-full p-7 sm:p-8">
+    <div v-if="success" ref="successBox" class="flex flex-col items-center text-center gap-4 py-4">
+      <div class="w-20 h-20 center rounded-full bg-mint border-3 border-ink shadow-[4px_4px_0_0_#16130f]">
+        <span class="i-carbon-checkmark text-4xl" />
+      </div>
+      <h2 class="heading text-3xl">You're in!</h2>
+      <p class="text-muted">
+        Welcome, <b class="text-ink">{{ username }}</b>. You've proven you're human. Eventually.
+      </p>
+      <button class="btn" @click="reset">
+        <span class="i-carbon-logout" /> Log out
+      </button>
     </div>
 
-    <form v-else ref="form" class="flex flex-col gap-4" novalidate @submit.prevent="submit">
-      <h2 class="text-2xl font-bold mb-2">Log in</h2>
+    <form v-else ref="form" class="flex flex-col gap-5" novalidate @submit.prevent="submit">
+      <div>
+        <h2 class="heading text-3xl">Log in</h2>
+        <p class="text-sm text-muted mt-1">Just a couple of quick checks.</p>
+      </div>
 
-      <label class="flex flex-col gap-1 text-sm">
+      <label class="flex flex-col gap-1.5 text-sm font-bold">
         Username
-        <input v-model="username" class="field" autocomplete="username">
+        <input v-model="username" class="field font-normal" autocomplete="username" placeholder="human_person_42">
       </label>
 
-      <label class="flex flex-col gap-1 text-sm">
+      <label class="flex flex-col gap-1.5 text-sm font-bold">
         Password
-        <input v-model="password" type="password" class="field" autocomplete="current-password">
+        <input v-model="password" type="password" class="field font-normal" autocomplete="current-password" placeholder="••••••••">
       </label>
 
+      <!-- the infamous checkbox -->
       <button
         type="button"
-        class="flex items-center gap-3 p-3 rounded-lg bg-neutral-800 border border-neutral-700 text-sm text-left cursor-pointer hover:border-neutral-500 transition"
+        class="group flex items-center gap-3 p-3.5 rounded-xl border-2 border-ink text-left cursor-pointer transition-all"
+        :class="verified ? 'bg-mint' : 'bg-paper hover:(bg-sun/40 -translate-y-px shadow-[3px_3px_0_0_#16130f])'"
         :aria-pressed="verified"
         @click="openCaptcha"
       >
-        <span
-          class="w-6 h-6 rounded border-2 center shrink-0"
-          :class="verified ? 'border-green-500 bg-green-500/20' : 'border-neutral-500 bg-neutral-900'"
-        >
-          <span v-if="verified" class="i-carbon-checkmark text-green-400" />
+        <span class="w-7 h-7 shrink-0 center rounded-md border-2 border-ink bg-white">
+          <span v-if="verified" class="i-carbon-checkmark text-lg" />
         </span>
-        <span class="flex-1">I'm not a robot</span>
-        <span class="i-carbon-security text-neutral-500" />
+        <span class="flex-1 font-bold">{{ verified ? 'Verified human' : 'I\'m not a robot' }}</span>
+        <span class="flex flex-col items-center text-[9px] font-bold uppercase leading-none text-muted">
+          <span class="i-carbon-bot text-xl mb-0.5 text-ink" />
+          worst<br>CAPTCHA
+        </span>
       </button>
 
-      <p v-if="error" class="text-sm text-red-400" role="alert">{{ error }}</p>
+      <p v-if="error" class="note-bad" role="alert">{{ error }}</p>
 
-      <button type="submit" class="btn mt-2">Log in</button>
+      <button type="submit" class="btn w-full py-3 text-lg">
+        Log in <span class="i-carbon-arrow-right" />
+      </button>
     </form>
 
     <WorstCaptcha v-if="captchaOpen" @done="onCaptchaDone" @cancel="captchaOpen = false" />
