@@ -1,0 +1,162 @@
+[
+  {
+    "src": "/cake/brie-cake.jpg",
+    "answer": "cake",
+    "reveal": "Cake. Fondant brie, with a slice cut out for realism.",
+    "credit": {
+      "author": "Christina McKenzie from York Region, Canada",
+      "license": "CC BY 2.0",
+      "url": "https://commons.wikimedia.org/wiki/File:%22cheese%22_cake_-_brie_bridal_shower_cake_(5141968881).jpg"
+    }
+  },
+  {
+    "src": "/cake/burger-cake.jpg",
+    "answer": "cake",
+    "reveal": "Cake. Even the fries.",
+    "credit": {
+      "author": "Michael Prudhomme",
+      "license": "CC BY-SA 3.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Cake_depicting_a_cheeseburger.jpg"
+    }
+  },
+  {
+    "src": "/cake/books-cake.jpg",
+    "answer": "cake",
+    "reveal": "Cake. Leather strap included.",
+    "credit": {
+      "author": "Christina McKenzie from York Region, Canada",
+      "license": "CC BY 2.0",
+      "url": "https://commons.wikimedia.org/wiki/File:History_Books_with_Leather_Strap_(5141968155).jpg"
+    }
+  },
+  {
+    "src": "/cake/bag-cake.jpg",
+    "answer": "cake",
+    "reveal": "Cake. Edible frosting purse.",
+    "credit": {
+      "author": "Gandydancer",
+      "license": "CC BY-SA 3.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Lady%27s_evening_bag_cake_with_edible_frosting.JPG"
+    }
+  },
+  {
+    "src": "/cake/hat-cake.jpg",
+    "answer": "cake",
+    "reveal": "Cake. Sugar paste captain's hat.",
+    "credit": {
+      "author": "Nana3791",
+      "license": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Sugar_paste_captains_hat.jpg"
+    }
+  },
+  {
+    "src": "/cake/turtle-cake.jpg",
+    "answer": "cake",
+    "reveal": "Cake. Sugar paste turtle.",
+    "credit": {
+      "author": "Nana3791",
+      "license": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Sugar_paste_sea_turtle.jpg"
+    }
+  },
+  {
+    "src": "/cake/sushi-cake.jpg",
+    "answer": "cake",
+    "reveal": "Cake. That 'roe' is not roe.",
+    "credit": {
+      "author": "Marshall Astor from San Pedro, United States",
+      "license": "CC BY-SA 2.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Sushi-Cake-1_(439784160).jpg"
+    }
+  },
+  {
+    "src": "/cake/sushi-tower.jpg",
+    "answer": "real",
+    "reveal": "Real. Sushi stacked on polystyrene. Looks like a cake, isn't one.",
+    "credit": {
+      "author": "Christo",
+      "license": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Sushi_(polystyrene)_%22cake%22.jpg"
+    }
+  },
+  {
+    "src": "/cake/wax-tart-melon.jpg",
+    "answer": "real",
+    "reveal": "Real. A wax display model. Wax is not cake.",
+    "credit": {
+      "author": "Ermell",
+      "license": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Tokio_Obsttorte_Modell-20091020-RM-101223.jpg"
+    }
+  },
+  {
+    "src": "/cake/wax-tart-berry.jpg",
+    "answer": "real",
+    "reveal": "Real. Wax display model. Please don't eat it.",
+    "credit": {
+      "author": "Ermell",
+      "license": "CC0",
+      "url": "https://commons.wikimedia.org/wiki/File:Wax-_cake_model_Japan1550.jpg"
+    }
+  },
+  {
+    "src": "/cake/brie.jpg",
+    "answer": "real",
+    "reveal": "Real brie.",
+    "credit": {
+      "author": "Jon Sullivan",
+      "license": "Public domain",
+      "url": "https://commons.wikimedia.org/wiki/File:Brie_cheese_salmon_smoked_pate_crackers_champagne.jpg"
+    }
+  },
+  {
+    "src": "/cake/burger.jpg",
+    "answer": "real",
+    "reveal": "Real cheeseburger.",
+    "credit": {
+      "author": "TheCulinaryGeek from Chicago, USA",
+      "license": "CC BY 2.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Cheeseburger_with_Fries_(5076301075).jpg"
+    }
+  },
+  {
+    "src": "/cake/books.jpg",
+    "answer": "real",
+    "reveal": "Real books.",
+    "credit": {
+      "author": "Chris Lawton chrislawton",
+      "license": "CC0",
+      "url": "https://commons.wikimedia.org/wiki/File:Leather_bound_books_(Unsplash).jpg"
+    }
+  },
+  {
+    "src": "/cake/purse.jpg",
+    "answer": "real",
+    "reveal": "Real evening bag (in a museum).",
+    "credit": {
+      "author": "The Metropolitan Museum of Art",
+      "license": "CC0",
+      "url": "https://commons.wikimedia.org/wiki/File:Evening_bag_MET_44.17.36_CP1.jpg"
+    }
+  },
+  {
+    "src": "/cake/turtle.jpg",
+    "answer": "real",
+    "reveal": "Real sea turtle.",
+    "credit": {
+      "author": "Sirkfish",
+      "license": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Green_Sea_Turtle-Jetty_Park_Pier-19_Oct_14-2.jpg"
+    }
+  },
+  {
+    "src": "/cake/sushi.jpg",
+    "answer": "real",
+    "reveal": "Real ikura sushi.",
+    "credit": {
+      "author": "sunday driver from Gion, Kyoto",
+      "license": "CC BY 2.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Ikura_gunkan_maki_sushi_by_sunday_driver_in_Kyoto.jpg"
+    }
+  }
+]
