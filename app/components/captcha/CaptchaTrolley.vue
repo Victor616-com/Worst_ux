@@ -98,37 +98,37 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <div class="flex justify-between text-sm">
-      <span class="text-neutral-300">Dilemma {{ round + 1 }} of {{ DILEMMAS.length }}</span>
-      <span class="font-mono" :class="remaining <= 2 ? 'text-red-400' : 'text-neutral-500'">
+    <div class="flex items-center justify-between gap-2">
+      <span>Dilemma {{ round + 1 }} of {{ DILEMMAS.length }}</span>
+      <span class="w95-well px-2 py-0.5 text-sm tabular-nums" :class="remaining <= 2 ? 'text-[var(--w95-bad)]' : ''">
         {{ remaining }}s until junction
       </span>
     </div>
 
-    <svg viewBox="0 0 400 170" class="w-full rounded-xl bg-neutral-950 border border-neutral-800">
-      <line x1="0" y1="85" x2="150" y2="85" stroke="#525252" stroke-width="4" />
+    <svg viewBox="0 0 400 170" class="w95-sunken w-full block" shape-rendering="crispEdges">
+      <line x1="0" y1="85" x2="150" y2="85" stroke="#000" stroke-width="4" />
       <line
         x1="150" y1="85" x2="400" y2="35" stroke-width="4"
-        :stroke="track === 'a' ? '#a78bfa' : '#404040'"
+        :stroke="track === 'a' ? '#000080' : '#c0c0c0'"
       />
       <line
         x1="150" y1="85" x2="400" y2="135" stroke-width="4"
-        :stroke="track === 'b' ? '#a78bfa' : '#404040'"
+        :stroke="track === 'b' ? '#000080' : '#c0c0c0'"
       />
 
-      <text x="330" y="51" font-size="16" text-anchor="middle" dominant-baseline="middle">{{ dilemma.a.emoji }}</text>
-      <text x="330" y="28" font-size="9" fill="#a3a3a3" text-anchor="middle">{{ dilemma.a.label }}</text>
-      <text x="330" y="119" font-size="16" text-anchor="middle" dominant-baseline="middle">{{ dilemma.b.emoji }}</text>
-      <text x="330" y="148" font-size="9" fill="#a3a3a3" text-anchor="middle">{{ dilemma.b.label }}</text>
+      <text x="330" y="51" :style="{ fontSize: '16px' }" text-anchor="middle" dominant-baseline="middle">{{ dilemma.a.emoji }}</text>
+      <text x="330" y="28" :style="{ fontSize: '10px' }" fill="#000" text-anchor="middle">{{ dilemma.a.label }}</text>
+      <text x="330" y="119" :style="{ fontSize: '16px' }" text-anchor="middle" dominant-baseline="middle">{{ dilemma.b.emoji }}</text>
+      <text x="330" y="148" :style="{ fontSize: '10px' }" fill="#000" text-anchor="middle">{{ dilemma.b.label }}</text>
 
-      <text ref="trolley" x="10" y="85" font-size="24" text-anchor="middle" dominant-baseline="middle">🚋</text>
+      <text ref="trolley" x="10" y="85" :style="{ fontSize: '24px' }" text-anchor="middle" dominant-baseline="middle">🚋</text>
     </svg>
 
     <div class="flex items-center justify-between gap-4">
-      <span class="text-sm text-neutral-400">
-        Heading for: <b class="text-neutral-100">{{ track === 'a' ? 'top track' : 'bottom track' }}</b>
+      <span>
+        Heading for: <b>{{ track === 'a' ? 'top track' : 'bottom track' }}</b>
       </span>
-      <button type="button" class="btn" :disabled="!!result" @click="pull">
+      <button type="button" class="w95-btn h-9" :disabled="!!result" @click="pull">
         Pull lever
       </button>
     </div>
@@ -136,13 +136,13 @@ onBeforeUnmount(() => {
     <p
       v-if="message"
       class="text-sm"
-      :class="result === 'right' ? 'text-green-400' : 'text-red-400'"
+      :class="result === 'right' ? 'text-[var(--w95-ok)]' : 'text-[var(--w95-bad)]'"
       role="status"
     >
       {{ message }}
     </p>
 
-    <p class="text-[9px] leading-tight text-neutral-600">
+    <p class="text-[10px] leading-tight text-[#404040]">
       Under CAPTCHA Ethics Policy §4.2(b), this CAPTCHA follows Leg Utilitarianism:
       always run over the fewest legs. Doing nothing still counts as a choice.
     </p>

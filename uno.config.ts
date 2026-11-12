@@ -27,7 +27,7 @@ export default defineConfig({
     presetTypography(),
     presetWebFonts({
       provider: 'bunny',
-      fonts: { sans: 'Inter' },
+      fonts: { sans: 'Inter', pixel: 'Pixelify Sans' },
     }),
   ],
   transformers: [

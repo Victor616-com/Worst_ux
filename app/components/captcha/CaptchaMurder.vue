@@ -48,55 +48,57 @@ onBeforeUnmount(() => clearInterval(lockTimer))
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 text-sm max-h-[60vh] overflow-y-auto pr-1">
-    <div class="p-4 rounded-xl bg-amber-950/30 border border-amber-900/50 text-amber-100/90 leading-relaxed">
-      <p class="font-semibold mb-1">Case file #0042: The Death of Lord Quill</p>
+  <div class="flex flex-col gap-3 max-h-[60vh] overflow-y-auto pr-1 w95-scroll">
+    <div class="w95-sunken px-3! py-2.5! leading-relaxed font-mono text-sm">
+      <p class="font-bold mb-1">CASE_0042.TXT - The Death of Lord Quill</p>
       Lord Quill was found in the study at 9:12 PM, struck on the head. Five people were in the house.
       Interrogations revealed one thing for certain:
       <b>exactly one suspect is lying, and the liar is the killer.</b>
     </div>
 
-    <div>
-      <p class="font-semibold mb-2">Statements</p>
+    <fieldset class="w95-group">
+      <legend>Statements</legend>
       <ul class="flex flex-col gap-1.5">
-        <li v-for="s in SUSPECTS" :key="s.id" class="text-neutral-300">
-          <b class="text-neutral-100">{{ s.name }}</b>
-          <span class="text-neutral-500"> ({{ s.role }})</span>: “{{ s.says }}”
+        <li v-for="s in SUSPECTS" :key="s.id">
+          <b>{{ s.name }}</b>
+          <span class="text-[#505050]"> ({{ s.role }})</span>: “{{ s.says }}”
         </li>
       </ul>
-    </div>
+    </fieldset>
 
-    <div>
-      <p class="font-semibold mb-2">Forensics</p>
-      <ul class="list-disc pl-5 flex flex-col gap-1 text-neutral-300">
+    <fieldset class="w95-group">
+      <legend>Forensics</legend>
+      <ul class="list-disc pl-5 flex flex-col gap-1">
         <li>The wound was blunt, not prickly.</li>
         <li>No crumbs were found at the scene.</li>
         <li>A metal detector swept the study. Nothing beeped.</li>
         <li>Gus's apron is covered in red stains. (He made spaghetti.)</li>
       </ul>
-    </div>
+    </fieldset>
 
-    <fieldset class="flex flex-col gap-1.5">
-      <legend class="font-semibold mb-2">Who did it?</legend>
+    <div class="grid sm:grid-cols-2 gap-3">
+    <fieldset class="w95-group flex flex-col gap-1.5">
+      <legend>Who did it?</legend>
       <label v-for="s in SUSPECTS" :key="s.id" class="flex items-center gap-2 cursor-pointer">
-        <input v-model="suspect" type="radio" name="suspect" :value="s.id" class="accent-[#6d28d9]">
+        <input v-model="suspect" type="radio" name="suspect" :value="s.id" class="w95-radio">
         {{ s.name }}
       </label>
     </fieldset>
 
-    <fieldset class="flex flex-col gap-1.5">
-      <legend class="font-semibold mb-2">With what?</legend>
+    <fieldset class="w95-group flex flex-col gap-1.5">
+      <legend>With what?</legend>
       <label v-for="w in WEAPONS" :key="w" class="flex items-center gap-2 cursor-pointer">
-        <input v-model="weapon" type="radio" name="weapon" :value="w" class="accent-[#6d28d9]">
+        <input v-model="weapon" type="radio" name="weapon" :value="w" class="w95-radio">
         {{ w }}
       </label>
     </fieldset>
+    </div>
 
-    <p v-if="message" class="text-sm" :class="message.startsWith('Case closed') ? 'text-green-400' : 'text-red-400'" role="status">
+    <p v-if="message" class="text-sm" :class="message.startsWith('Case closed') ? 'text-[var(--w95-ok)]' : 'text-[var(--w95-bad)]'" role="status">
       {{ message }}
     </p>
 
-    <button type="button" class="btn self-start" :disabled="locked > 0" :class="{ 'opacity-50 cursor-not-allowed': locked > 0 }" @click="accuse">
+    <button type="button" class="w95-btn self-end h-9" :disabled="locked > 0" @click="accuse">
       {{ locked ? `Suspended (${locked}s)` : 'Accuse' }}
     </button>
   </div>

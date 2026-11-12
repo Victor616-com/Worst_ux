@@ -127,26 +127,26 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="flex flex-col gap-3">
-    <div class="flex justify-between text-sm">
-      <span class="text-neutral-300">{{ message }}</span>
-      <span class="flex items-center gap-3">
+    <div class="flex items-center justify-between gap-3">
+      <span role="status">{{ message }}</span>
+      <span class="flex items-center gap-2 shrink-0">
         <button
           type="button"
-          class="text-neutral-500 hover:text-neutral-200 cursor-pointer"
+          class="w95-btn min-w-0! px-1.5! h-6.5"
           :aria-label="muted ? 'Unmute' : 'Mute'"
           :title="muted ? 'Unmute' : 'Mute'"
           @click="toggleMute"
         >
           <span :class="muted ? 'i-carbon-volume-mute' : 'i-carbon-volume-up'" class="block" />
         </button>
-        <span class="font-mono text-neutral-500">{{ kills }}/{{ NEEDED }}</span>
+        <span class="w95-well px-2 py-0.5 tabular-nums">{{ kills }}/{{ NEEDED }}</span>
       </span>
     </div>
 
     <div
       ref="area"
-      class="relative h-72 rounded-xl border border-neutral-800 overflow-hidden cursor-none select-none touch-none"
-      style="background: linear-gradient(#fef3c7, #fde68a)"
+      class="w95-sunken relative h-72 overflow-hidden cursor-none select-none touch-none"
+      style="background: #fffbe0 repeating-linear-gradient(0deg, transparent 0 23px, #f1e6a8 23px 24px)"
       @pointermove="moveSwatter"
       @pointerenter="hovering = true"
       @pointerleave="hovering = false"

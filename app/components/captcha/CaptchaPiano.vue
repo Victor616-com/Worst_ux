@@ -155,46 +155,46 @@ onBeforeUnmount(() => {
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex items-start justify-between gap-4 text-sm">
-      <span :class="status === 'wrong' ? 'text-red-400' : status === 'done' ? 'text-green-400' : 'text-neutral-300'" role="status">
+      <span :class="status === 'wrong' ? 'text-[var(--w95-bad)]' : status === 'done' ? 'text-[var(--w95-ok)]' : ''" role="status">
         {{ message }}
       </span>
-      <button type="button" class="shrink-0 flex items-center gap-1 text-neutral-400 hover:text-white cursor-pointer disabled:opacity-40" :disabled="demo" @click="listen">
+      <button type="button" class="w95-btn shrink-0 flex items-center gap-1.5" :disabled="demo" @click="listen">
         <span class="i-carbon-play-filled" /> Listen
       </button>
     </div>
 
     <!-- lyrics, lit up as you go -->
-    <p class="flex flex-wrap gap-x-1.5 gap-y-1 text-lg leading-snug">
+    <p class="w95-sunken flex flex-wrap gap-x-1.5 gap-y-1 px-2.5! py-2! text-lg leading-snug">
       <span
         v-for="(s, i) in SONG"
         :key="i"
         class="transition-colors"
-        :class="i < position ? 'text-amber-300' : i === position && !demo ? 'text-neutral-100 underline underline-offset-4' : 'text-neutral-600'"
+        :class="i < position ? 'bg-[var(--w95-navy)] text-white px-0.5' : i === position && !demo ? 'underline underline-offset-4' : 'text-[#808080]'"
       >{{ s.word }}</span>
     </p>
 
     <!-- keyboard -->
-    <div class="relative h-44 select-none touch-manipulation">
-      <div class="flex h-full gap-0.5">
+    <div class="w95-sunken relative h-44 select-none touch-manipulation bg-black!">
+      <div class="flex h-full gap-px">
         <button
           v-for="k in WHITE"
           :key="k.note"
           type="button"
-          class="flex-1 rounded-b-lg border border-neutral-400 flex flex-col justify-end items-center pb-2 text-xs text-neutral-500 cursor-pointer transition-colors"
-          :class="pressed === k.note ? 'bg-amber-200' : 'bg-white hover:bg-neutral-100'"
+          class="flex-1 flex flex-col justify-end items-center pb-2 text-xs cursor-pointer"
+          :class="pressed === k.note ? 'bg-[#ffff80] shadow-[inset_2px_2px_#808080]' : 'bg-white shadow-[inset_-2px_-2px_#c0c0c0] hover:bg-[#f2f2f2]'"
           :aria-label="`${k.note} key`"
           @pointerdown.prevent="play(k)"
         >
-          <span class="font-semibold text-neutral-700">{{ k.note.replace('5', '') }}</span>
-          <span class="uppercase opacity-60">{{ k.kbd }}</span>
+          <span class="font-semibold">{{ k.note.replace('5', '') }}</span>
+          <span class="uppercase text-[#808080]">{{ k.kbd }}</span>
         </button>
       </div>
       <button
         v-for="k in BLACK"
         :key="k.note"
         type="button"
-        class="absolute top-0 w-[8%] h-[60%] rounded-b-md border border-black flex items-end justify-center pb-1 text-[10px] text-neutral-500 uppercase cursor-pointer transition-colors"
-        :class="pressed === k.note ? 'bg-amber-600' : 'bg-neutral-900 hover:bg-neutral-800'"
+        class="absolute top-0.5 w-[8%] h-[60%] flex items-end justify-center pb-1 text-[10px] text-[#a0a0a0] uppercase cursor-pointer"
+        :class="pressed === k.note ? 'bg-[var(--w95-navy)]' : 'bg-[#202020] shadow-[inset_-2px_-2px_#000,inset_2px_2px_#505050] hover:bg-[#303030]'"
         :style="{ left: blackLeft(k) }"
         :aria-label="`${k.note} key`"
         @pointerdown.prevent="play(k)"
@@ -203,6 +203,6 @@ onBeforeUnmount(() => {
       </button>
     </div>
 
-    <p class="text-xs text-neutral-600">Click the keys or use your keyboard (A S D F G H J K).</p>
+    <p class="text-xs text-[#404040]">Click the keys or use your keyboard (A S D F G H J K).</p>
   </div>
 </template>
