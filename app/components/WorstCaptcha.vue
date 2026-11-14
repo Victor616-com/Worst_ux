@@ -10,12 +10,12 @@ import CaptchaTattoo from "./captcha/CaptchaTattoo.vue";
 const emit = defineEmits<{ done: []; cancel: [] }>();
 
 const STEPS = [
-  { title: "Swat the mosquito", component: CaptchaMosquito, progress: 1 },
+  { title: "Translate the tattoo", component: CaptchaTattoo, progress: 1 },
+  { title: "Swat the mosquito", component: CaptchaMosquito, progress: 9 },
   { title: "Play a song", component: CaptchaPiano, progress: 6 },
   { title: "Real or cake?", component: CaptchaCake, progress: 3 },
   { title: "Make an ethical decision", component: CaptchaTrolley, progress: 4 },
   { title: "Restore power", component: CaptchaTorch, progress: 2 },
-  { title: "Translate the tattoo", component: CaptchaTattoo, progress: 9 },
 ];
 
 const index = ref(0);
